@@ -4,26 +4,24 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/sairam600582/terraform-jenkins.git']]])
-             }
-        }
-        
-        stage ("terraform init") {
-            steps {
-                sh ('terraform init -no-color -reconfigure') 
+                git 'https://github.com/sairam600582/terraform-jenkins.git'
             }
         }
-        stage ("terraform plan") {
+        stage('Init') {
             steps {
-                sh ('terraform plan -no-color') 
+                sh 'terraform init'
             }
         }
-                
-        stage ("terraform Action") {
+        stage('Plan') {
             steps {
-                echo "Terraform action is --> ${action}"
-                sh ('terraform ${action} --auto-approve -no-color')
-           }
+                sh 'terraform plan'
+            }
+        }
+        stage('Apply') {
+            steps {
+                input 'Approve to apply?'
+                sh 'terraform apply -auto-approve'
+            }
         }
     }
 }
