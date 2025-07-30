@@ -1,3 +1,6 @@
+provider "aws" {
+  region = "ap-south-1"
+}
 resource "aws_s3_bucket" "myBucket" {
    bucket = "my-older-tutorial-demo-bucket"
 }
@@ -77,6 +80,14 @@ resource "aws_security_group" "sg" {
   tags = {
     Name = "my-sucure-g"
   }
+}
+
+resource "tls_private_key" "generated" {
+algorithm = "RSA"
+}
+resource "local_file" "private_key_pem" {
+content = tls_private_key.generated.private_key_pem
+filename = "MypairKey.pem"
 }
 
 resource "aws_instance" "my-instance" {
