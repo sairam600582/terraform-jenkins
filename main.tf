@@ -80,8 +80,8 @@ resource "aws_security_group" "sg" {
 }
 
 resource "aws_instance" "my-instance" {
-  ami = ""
-  instance_type = ""
+  ami = "ami-0f918f7e67a3323f0"
+  instance_type = "t2.micro"
 
   security_groups = [aws_security_group.sg.id]
   subnet_id = aws_subnet.mysubnet.id
